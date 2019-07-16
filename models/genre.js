@@ -3,7 +3,7 @@ const db = require('./db'); // get the Database Connection object
 console.log('inside genre model')
 
 const getAllGenres = async (request, response) => {
-    console.log('inside getallgenres');
+    //    console.log('inside getallgenres');
     try {
         const genres = await db.any('SELECT * FROM genre');
         return response.status(200)
@@ -15,7 +15,7 @@ const getAllGenres = async (request, response) => {
 
 const getGenreById = async (request, response) => {
     const id = parseInt(request.params.id);
-    console.log('inside getGenreByID');
+    //    console.log('inside getGenreByID');
     try {
         const genre = await db.any("SELECT * FROM genre WHERE id = $1", [id]);
         return response.status(200)

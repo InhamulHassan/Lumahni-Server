@@ -2,7 +2,7 @@ var express = require('express'),
     router = express.Router(),
     genre = require('../models/genre');
 
-console.log('inside genre controller');
+//console.log('inside genre controller');
 router.route('/')
     .get(genre.getAllGenres)
     .post(genre.createGenre);
