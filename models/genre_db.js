@@ -1,7 +1,5 @@
 const { db, pgp } = require("../helpers/db"); // get the Database Connection object
 
-//const db = require('../helpers/db'); // get the Database Connection object
-
 const getAllGenres = async (request, response) => {
   try {
     const genres = await db.any("SELECT * FROM genre");
@@ -40,11 +38,14 @@ const updateGenre = async (request, response) => {
   obj.id = id; // linking the id paramater into the JSON object
 
   try {
-    await db.none(
+    const result = await db.none(
       "UPDATE genre SET name = ${name}, abbv = ${abbv}, descr = ${descr}, img_l = ${img_l}, img_m = ${img_m}, img_s = ${img_s} WHERE id = ${id}",
       obj
     );
-    return response.status(201).json(obj); // success returns the updated entry as JSON
+    return return response.status(201).send({
+      success: true,
+      id: result.id
+    }); // success
   } catch (err) {
     throw err; //error
   }
