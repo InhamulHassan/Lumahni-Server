@@ -58,7 +58,7 @@ const searchGenresByName = async (request, response) => {
   const genreNameQuery = request.params.genreNameQuery;
   try {
     const query = await db.any(
-      `SELECT id, name, abbv, descr, img_l, img_m, img_s FROM genre WHERE name ILIKE '$1#%'`,
+      `SELECT id, name, descr, img_l, img_m, img_s FROM genre WHERE name ILIKE '$1#%'`,
       [genreNameQuery]
     );
     return response.status(200).json(query); // success

@@ -1,7 +1,7 @@
 const { db, pgp } = require("../helpers/db"); // get the Database Connection object
 
 const getBooks = async (request, response, limitQuery = false, page = 1) => {
-  let query = `SELECT id, grid, title, isbn, isbn13, descr, img, img_thumbnail, authors, genres 
+  let query = `SELECT b.id, b.grid, b.title, b.isbn, b.isbn13, b.descr, b.img, b.img_thumbnail, bba.authors, bbg.genres 
     FROM book b
 	LEFT JOIN(
 		SELECT bba.book_id AS id, json_agg(json_build_object('id', a.id, 'name', a.name, 'grid', a.grid)) AS authors
@@ -39,7 +39,7 @@ const getAllBooksByPage = (request, response) => {
 const getBookByAttribute = async (attr, data, request, response) => {
   try {
     const query = await db.any(
-      `SELECT id, grid, title, isbn, isbn13, descr, img, img_thumbnail, authors, genres
+      `SELECT b.id, b.grid, b.title, b.isbn, b.isbn13, b.descr, b.img, b.img_thumbnail, bba.authors, bbg.genres 
 	FROM book b
 	LEFT JOIN(
 		SELECT bba.book_id AS id, json_agg(json_build_object('id', a.id, 'name', a.name, 'grid', a.grid)) AS authors

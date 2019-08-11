@@ -163,7 +163,7 @@ const getBooksByAuthor = async (request, response) => {
 		FROM bookbyauthor bba
 		LEFT JOIN book b ON b.id = bba.book_id
 		LEFT JOIN(
-			SELECT bbg.book_id, json_agg(json_build_object('id', g.id, 'name', g.name, 'abbv', g.abbv)) AS genres
+			SELECT bbg.book_id, json_agg(json_build_object('id', g.id, 'name', g.name)) AS genres
 			FROM bookbygenre bbg
 			LEFT JOIN genre g ON g.id = bbg.genre_id
 			GROUP BY bbg.book_id

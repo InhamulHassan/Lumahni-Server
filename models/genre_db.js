@@ -22,11 +22,14 @@ const getGenreById = async (request, response) => {
 const createGenre = async (request, response) => {
   const obj = request.body; // req.body has structure [{...}] pg-promise needs {...}
   try {
-    const id = await db.one(
-      "INSERT INTO genre(name, abbv, descr, img_l, img_m, img_s) VALUES(${name}, ${abbv}, ${descr}, ${img_l}, ${img_m}, ${img_s}) RETURNING id",
+    const result = await db.one(
+      "INSERT INTO genre(name, descr, img_l, img_m, img_s) VALUES(${name}, ${descr}, ${img_l}, ${img_m}, ${img_s}) RETURNING id",
       obj
     );
-    return response.status(201).json(id); // success
+    return response.status(201).send({
+      success: true,
+      id: result.id
+    }); // success
   } catch (err) {
     throw err; //error
   }
@@ -39,12 +42,12 @@ const updateGenre = async (request, response) => {
 
   try {
     const result = await db.none(
-      "UPDATE genre SET name = ${name}, abbv = ${abbv}, descr = ${descr}, img_l = ${img_l}, img_m = ${img_m}, img_s = ${img_s} WHERE id = ${id}",
+      "UPDATE genre SET name = ${name}, descr = ${descr}, img_l = ${img_l}, img_m = ${img_m}, img_s = ${img_s} WHERE id = ${id}",
       obj
     );
     return response.status(201).send({
       success: true,
-      id: result.id
+      changesMade: obj
     }); // success
   } catch (err) {
     throw err; //error
@@ -69,7 +72,7 @@ const getBooksByGenre = async (request, response) => {
   const id = parseInt(request.params.id);
   try {
     const query = await db.any(
-      `SELECT g.id, g.name, g.abbv, g.descr, g.img_l, g.img_m, g.img_s, bbg.books
+      `SELECT g.id, g.name, g.descr, g.img_l, g.img_m, g.img_s, bbg.books
     FROM genre g
 	LEFT JOIN(
 		SELECT bbg.genre_id, json_agg(json_build_object('id', b.id, 'title', b.title, 'grid', b.grid, 'ísbn', b.isbn, 'isbn13', b.isbn13, 'descr', b.descr, 'img', b.img, 'img_thumbnail', b.img_thumbnail, 'authors', bba.authors)) AS books
