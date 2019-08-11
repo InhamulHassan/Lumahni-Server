@@ -42,7 +42,7 @@ const updateGenre = async (request, response) => {
       "UPDATE genre SET name = ${name}, abbv = ${abbv}, descr = ${descr}, img_l = ${img_l}, img_m = ${img_m}, img_s = ${img_s} WHERE id = ${id}",
       obj
     );
-    return return response.status(201).send({
+    return response.status(201).send({
       success: true,
       id: result.id
     }); // success
