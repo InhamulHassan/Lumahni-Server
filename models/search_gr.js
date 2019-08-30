@@ -1,4 +1,4 @@
-const { fetchGR } = require("../helpers/fetch_goodreads");
+const fetchGR = require("../helpers/fetch_goodreads");
 
 // Get multiple book entities from the results
 //const searchBooks = query => {
@@ -33,7 +33,7 @@ const { fetchGR } = require("../helpers/fetch_goodreads");
 
 const searchBooks = query => {
   return fetchGR("search/index.xml", query).then(res => {
-//      console.log('data' + JSON.stringify(res.search[0]) + ':/end')
+    //      console.log('data' + JSON.stringify(res.search[0]) + ':/end')
     return res.search[0];
   });
 };

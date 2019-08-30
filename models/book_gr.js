@@ -1,9 +1,8 @@
-const { fetchGR } = require("../helpers/fetch_goodreads");
+const fetchGR = require("../helpers/fetch_goodreads");
 
 // Get a single book entity from the results
 // Gets a book when given a query
 const getBook = (endpoint, query = "") => {
-    console.log(endpoint + ':- get book by GR - ' + query );
   return fetchGR(`book/${endpoint}`, query).then(res => res.book[0]);
 };
 

@@ -1,4 +1,4 @@
-const { fetchGR } = require("../helpers/fetch_goodreads");
+const fetchGR = require("../helpers/fetch_goodreads");
 
 const getAuthorById = id => {
   const authorId = encodeURIComponent(id);
