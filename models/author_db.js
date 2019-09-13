@@ -2,7 +2,9 @@ const { db, pgp } = require("../helpers/db"); // get the Database Connection obj
 
 const getAllAuthors = async (request, response) => {
   try {
-    const query = await db.any("SELECT * FROM author");
+    const query = await db.any(
+      "SELECT id, grid, name, bio, img_l, img_m, img_s FROM author ORDER BY id DESC"
+    );
     if (Object.keys(query).length) {
       return response.status(200).send({
         authors: query

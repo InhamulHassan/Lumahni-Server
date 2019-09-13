@@ -3,7 +3,6 @@ const port = config.port;
 const env = config.env;
 
 const app = require('./app'); // requiring the app (Express object) object from app.js 
-
 // Error Handlers for common errors
 //if (process.listeners('unhandledRejection').length < 1) {
 //    process.on('unhandledRejection', (reason, promise) => {

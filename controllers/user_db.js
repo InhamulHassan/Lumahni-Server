@@ -14,6 +14,15 @@ router
   })
   .post(auth.authorizeUser);
 
+router
+  .route("/auth/member")
+  .get(function(request, response) {
+    response.status(200).send({
+      message: "Member Auth API"
+    }); // success
+  })
+  .post(auth.authorizeMember);
+
 router.route("/details").get(auth.fetchAuthUser);
 
 router

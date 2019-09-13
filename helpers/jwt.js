@@ -8,6 +8,7 @@ function jwt() {
     path: [
       // public routes that don't require authentication
       "/user/auth",
+      "/user/auth/member",
       "/user/register",
       "/quote",
       // using regex to allow url parameters

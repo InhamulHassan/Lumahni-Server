@@ -71,6 +71,52 @@ const authorizeUser = async (request, response) => {
   }
 };
 
+const authorizeMember = async (request, response) => {
+  const userCredentials = await user.checkUserExists(request, response);
+  if (userCredentials !== false) {
+    if (userCredentials.user_role != "Member") {
+      return response.status(401).send({
+        success: false,
+        message: "User does not exist"
+      });
+    } else {
+      bcrypt.compare(
+        request.body.password,
+        userCredentials.password_hash,
+        async function(err, res) {
+          if (res && !err) {
+            const token = await jwt.sign(
+              userCredentials,
+              process.env.SECRET_KEY
+            );
+            await user.updateLogTime(request, response, userCredentials.id); // update last_logged time
+            return response.status(200).send({
+              success: true,
+              authToken: token,
+              authUser: {
+                id: userCredentials.id,
+                username: userCredentials.username,
+                full_name: userCredentials.full_name,
+                user_role: userCredentials.user_role
+              }
+            });
+          } else {
+            return response.status(401).send({
+              success: false,
+              message: "Invalid credentials"
+            });
+          }
+        }
+      );
+    }
+  } else {
+    return response.status(401).send({
+      success: false,
+      message: "User does not exist"
+    });
+  }
+};
+
 const fetchAuthUser = (request, response) => {
   if (request.user) {
     return response.status(200).send({
@@ -88,7 +134,7 @@ const fetchAuthUser = (request, response) => {
       message: "Invalid token"
     });
   }
-}
+};
 
 const resetPassword = async (request, response) => {
   const userCredentials = await user.checkUserExists(request, response);
@@ -143,6 +189,7 @@ const resetPassword = async (request, response) => {
 module.exports = {
   registerUser,
   authorizeUser,
+  authorizeMember,
   fetchAuthUser,
   resetPassword
 };

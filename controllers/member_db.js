@@ -7,6 +7,8 @@ router
   .get(member.getAllMembers)
   .post(member.createMember);
 
+router.route("/city").get(member.getCityList);
+
 router
   .route("/:id")
   .get(member.getMemberById)

@@ -25,28 +25,4 @@ router.route("/isbn/:isbn13").get(book.getBookByISBN13);
 
 router.route("/title/:title").get(book.getBookByTitle);
 
-router
-  .route("/copy")
-  .get(book.getAllBookCopies)
-  .post(book.createBookCopy);
-
-router
-  .route("/copy/:id")
-  .get(book.getBookCopiesById)
-  .put(book.updateBookCopy)
-  .delete(book.deleteBookCopy);
-
-router
-  .route("/copy/book/:book_id")
-  .get(book.getBookCopiesByBookId)
-  .delete(book.deleteBookCopyByBookId);
-
-router
-  .route("/copy/availability/:availability")
-  .get(book.getBookCopiesByAvailability);
-
-router.route("/copy/call/:call_number").get(book.getBookCopiesByCallNumber);
-
-router.route("/copy/shelf/:shelf_code").get(book.getBookCopiesByShelfCode);
-
 module.exports = router;

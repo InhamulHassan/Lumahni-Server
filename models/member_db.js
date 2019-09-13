@@ -2,7 +2,13 @@ const { db } = require("../helpers/db"); // get the Database Connection object
 
 const getAllMembers = async (request, response) => {
   try {
-    const query = await db.any("SELECT * FROM member");
+    const query = await db.any(
+      `SELECT m.id, m.first_name, m.last_name, m.join_date, m.expiration_date, 
+		m.email_address, m.mobile_number, c.city, c.state
+    	FROM member m
+		LEFT JOIN city c ON c.id = m.city_id 
+		ORDER BY m.id DESC`
+    );
     if (Object.keys(query).length) {
       return response.status(200).send({
         members: query
@@ -17,11 +23,33 @@ const getAllMembers = async (request, response) => {
   }
 };
 
+const getCityList = async (request, response) => {
+  try {
+    const query = await db.any("SELECT id, city, state FROM city");
+    if (Object.keys(query).length) {
+      return response.status(200).send({
+        cities: query
+      }); // success
+    } else {
+      return response.status(404).send({
+        message: "Cities not found"
+      }); // success
+    }
+  } catch (err) {
+    throw err; // error
+  }
+};
+
 const getMemberByAttribute = async (attr, data, request, response) => {
   try {
-    const query = await db.any(`SELECT * FROM member WHERE ${attr} = $1`, [
-      data
-    ]);
+    const query = await db.any(
+      `
+		SELECT m.id, m.first_name, m.last_name, m.join_date, m.expiration_date, 
+		m.email_address, m.mobile_number, c.city, c.state
+    	FROM member m
+		LEFT JOIN city c ON c.id = m.city_id  WHERE ${attr} = $1`,
+      [data]
+    );
     if (Object.keys(query).length) {
       return response.status(200).send({
         member: query[0]
@@ -38,7 +66,7 @@ const getMemberByAttribute = async (attr, data, request, response) => {
 
 const getMemberById = (request, response) => {
   if ((id = parseInt(request.params.id))) {
-    return getMemberByAttribute("id", id, request, response);
+    return getMemberByAttribute("m.id", id, request, response);
   } else {
     return response.status(400).send({
       message: "Invalid parameter supplied, expected Member ID"
@@ -48,7 +76,7 @@ const getMemberById = (request, response) => {
 
 const getMemberByName = (request, response) => {
   if ((name = parseInt(request.params.name))) {
-    return getMemberByAttribute("name", name, request, response);
+    return getMemberByAttribute("m.first_name", name, request, response);
   } else {
     return response.status(400).send({
       message: "Invalid parameter supplied, expected Member Name"
@@ -125,5 +153,6 @@ module.exports = {
   getMemberByName,
   createMember,
   updateMember,
-  deleteMember
+  deleteMember,
+  getCityList
 };
