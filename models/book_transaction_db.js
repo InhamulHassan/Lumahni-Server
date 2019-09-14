@@ -126,7 +126,7 @@ const getBookIssuesByAttribute = async (attr, data, request, response) => {
       }); // success
     } else {
       return response.status(404).send({
-        message: "Unable to find the issued book"
+        message: "Unable to find the issued books"
       }); // success
     }
   } catch (err) {

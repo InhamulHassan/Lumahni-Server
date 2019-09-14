@@ -2,7 +2,7 @@ const { db, pgp } = require("../helpers/db"); // get the Database Connection obj
 
 // Function for fetching book copy data
 const getAllBookCopies = async (request, response) => {
-  let sqlQuery = `SELECT bc.id, bc.book_id, b.title, bba.authors, bc.availability, bc.format, bc.call_number, bs.floor, bs.section, bs.shelf_code
+  let sqlQuery = `SELECT bc.id, bc.book_id, b.title, b.img, b.isbn, b.isbn13, bba.authors, bc.availability, bc.format, bc.call_number, bs.floor, bs.section, bs.shelf_code
     FROM bookcopy bc
 	LEFT JOIN book b ON b.id = bc.book_id 
 	LEFT JOIN(
@@ -32,7 +32,7 @@ const getAllBookCopies = async (request, response) => {
 const getBookCopyByAttribute = async (attr, data, request, response) => {
   try {
     const query = await db.any(
-      `SELECT bc.id AS copy_id, b.id, b.title, bba.authors, bc.availability, bc.format, bc.call_number, bs.floor, bs.section, bs.shelf_code
+      `SELECT bc.id AS copy_id, b.id, b.title, b.img, b.isbn, b.isbn13, bba.authors, bc.availability, bc.format, bc.call_number, bs.floor, bs.section, bs.shelf_code
     FROM bookcopy bc
 	LEFT JOIN book b ON b.id = bc.book_id 
 	LEFT JOIN(
@@ -88,7 +88,7 @@ const getBookCopyByCallNumber = (request, response) => {
 const getBookCopiesByAttribute = async (attr, data, request, response) => {
   try {
     const query = await db.any(
-      `SELECT bc.id AS copy_id, b.id, b.title, bba.authors, bc.availability, bc.format, bc.call_number, bs.floor, bs.section, bs.shelf_code
+      `SELECT bc.id AS copy_id, b.id, b.title, b.img, b.isbn, b.isbn13, bba.authors, bc.availability, bc.format, bc.call_number, bs.floor, bs.section, bs.shelf_code
     FROM bookcopy bc
 	LEFT JOIN book b ON b.id = bc.book_id 
 	LEFT JOIN(
